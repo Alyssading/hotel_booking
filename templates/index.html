@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    index
+{% endblock %}
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="search-block">
+        <div class="form">
+            <form method="get" action="{% url 'hotel_list' %}">
+
+                <div class="row">
+                    <div class="col-lg-4 search-form">
+                        <input type="text" id="hotel_name" name="hotel_name" class="form-control"
+                               placeholder="Destination or Hotel Name">
+                    </div>
+                    <div class="col-lg-3 search-form">
+                        <div class="form-group">
+                            <input required="required" type="text" id="daterange" name="daterange"
+                                   placeholder="Select Checkin Checkout"
+                                   value="{{ default_date_range }}"
+                                   class="form-control loon"/>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 search-form dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                                aria-expanded="false"
+                                style="color: #495057; width: 100%;background: white;border: 1px solid #ced4da;">
+                            <strong id="adults_display">2</strong>&nbsp;Adults,&nbsp;<strong id="child_display">0</strong>&nbsp;Child,&nbsp;<strong id="room_count_display">1</strong>&nbsp;Rooms&nbsp;
+                        </button>
+                        <div class="dropdown-menu">
+                            <div class="">
+                                <div class="form-group">
+                                    <label for="adults" class="col-sm-2 col-form-label">Adults</label>
+                                    <div class="col-sm-10">
+                                        <input required="required" type="number" id="adults" name="adults"
+                                               placeholder="adults"
+                                               class="form-control" value="2">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="children" class="col-sm-2 col-form-label">Children</label>
+                                    <div class="col-sm-10">
+                                        <input required="required" type="number" id="children" name="children"
+                                               placeholder="children"
+                                               class="form-control loon"
+                                               value="0">
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="room_count" class="col-sm-10 col-form-label">Room Count</label>
+                                    <div class="col-sm-10">
+                                        <input required="required" type="number" id="room_count" name="room_count"
+                                               placeholder="room_count"
+                                               class="form-control loon"
+                                               value="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 search-form">
+                        <button type="submit" class="btn btn-primary btn-search" style="width: 100%">Search</button>
+                    </div>
+                </div>
+            </form>
+            {#            <H4 class="text-center">Travel</H4>#}
+            {##}
+            {#            <form action="" method="post" novalidate autocomplete="off">#}
+            {#                {% csrf_token %}#}
+            {#                <div class="form-group">#}
+            {#                    <label for="hotel_name">Destination or Hotel Name</label>#}
+            {#                    <input required="required" type="text" name="hotel_name" placeholder="Destination/Property name"#}
+            {#                           id="hotel_name"#}
+            {#                           class="form-control loon">#}
+            {#                </div>#}
+            {##}
+            {#                <div class="form-group">#}
+            {#                    <label for="daterange">Checkin and Checkout</label>#}
+            {#                    <input required="required" type="text" id="daterange" name="daterange"#}
+            {#                           placeholder="Select Checkin Checkout"#}
+            {#                           class="form-control loon"/>#}
+            {#                </div>#}
+            {##}
+            {#                <div class="form-row">#}
+            {#                    <div class="form-group col-md-4">#}
+            {#                        <label for="adults">Adults</label>#}
+            {#                        <input required="required" type="number" id="adults" name="adults" placeholder="adults"#}
+            {#                               class="form-control" value="2">#}
+            {#                    </div>#}
+            {#                    <div class="form-group col-md-4">#}
+            {#                        <label for="children">Children</label>#}
+            {#                        <input required="required" type="number" id="children" name="children" placeholder="children"#}
+            {#                               class="form-control loon"#}
+            {#                               value="0">#}
+            {##}
+            {#                    </div>#}
+            {#                    <div class="form-group col-md-4">#}
+            {#                        <label for="room_count">Room Count</label>#}
+            {#                        <input required="required" type="number" id="room_count" name="room_count"#}
+            {#                               placeholder="room_count"#}
+            {#                               class="form-control loon"#}
+            {#                               value="1">#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#                <input type="submit" class="btn-login" value="Search Hotel Details">#}
+            {#            </form>#}
+
+
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (e) {
+                var ref = $(this).find("[required=required]");
+                $(ref).each(function () {
+                    if ($(this).val() == '') {
+                        alert("Required field should not be blank.");
+                        $(this).focus();
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                return true;
+            });
+        });
+        // 时间选择器
+        $(function () {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'center',
+                autoUpdateInput: false,
+                locale: {
+                    format: 'YYYY-MM-DD',
+                    cancelLabel: 'Clear'
+                },
+
+            });
+            $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+            });
+            $('input[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+        });
+        // Jquery标签选择器，#是根据ID选择， .是根据class选择
+        $('#adults').on('change', function () {
+            var val = $(this).val() // 获取当前选中标签的value
+            $('#adults_display').text(val) // 把上面获取的值给这个标签
+        })
+        $('#children').on('change', function () {
+            var val = $(this).val()
+            $('#child_display').text(val)
+        })
+        $('#room_count').on('change', function () {
+            var val = $(this).val()
+            $('#room_count_display').text(val)
+        })
+    </script>
+
+{% endblock script %}
+
+{% block style %}
+    <style>
+        body {
+            background: rgba(0, 0, 0, 0);
+        }
+
+        .search-block {
+            margin-top: 250px;
+            padding-top: 18px;
+            padding-left: 30px;
+            padding-right: 30px;
+            box-sizing: border-box;
+            background-color: rgba(200, 200, 210, 0.2);
+            box-shadow: 0 0 10px rgba(100, 100, 100, 0.22);
+        }
+
+        html {
+            height: 100%;
+            background: url("static/img/index_bg.jpg");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+    </style>
+{% endblock %}
+
