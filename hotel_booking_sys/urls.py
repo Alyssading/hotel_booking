@@ -27,5 +27,6 @@ urlpatterns = [path('login/', views.user_login, name='login'),  # login
 
                path('', views.index, name='index'),  # search page
                path('hotel_list/', views.hotel_list, name='hotel_list'),  # Search hotel list page
+               path('hotel_search_detail/', views.hotel_search_detail, name='hotel_search_detail'),  # Search hotel details page
 
                ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

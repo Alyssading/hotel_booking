@@ -1,6 +1,7 @@
 from .index_view import (
     index,
     hotel_list,
+    hotel_search_detail,
 )
 from .user_view import (
     register,

@@ -1,0 +1,432 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    index
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form method="get">
+            <div class="search">
+
+
+                <div class="row">
+                    <div class="col-lg-4 search-form">
+                        <input type="text" id="hotel_name" name="hotel_name" class="form-control"
+                               value="{{ hotel_name }}"
+                               placeholder="Destination or Hotel Name">
+                    </div>
+                    <div class="col-lg-3 search-form">
+                        <div class="form-group">
+                            <input required="required" type="text" id="daterange" name="daterange"
+                                   placeholder="Select Checkin Checkout"
+                                   class="form-control loon"
+                                   value="{{ checkin }} - {{ checkout }}"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 search-form dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                                aria-expanded="false"
+                                style="color: #495057; width: 100%;background: white;border: 1px solid #ced4da;">
+                            <strong id="adults_display">{{ adults }}</strong>&nbsp;Adults,&nbsp;<strong
+                                id="child_display">{{ children }}</strong>&nbsp;Child,&nbsp;<strong
+                                id="room_count_display">{{ room_count }}</strong>&nbsp;Rooms&nbsp;
+                        </button>
+                        <div class="dropdown-menu">
+                            <div class="">
+                                <div class="form-group">
+                                    <label for="adults" class="col-sm-2 col-form-label">Adults</label>
+                                    <div class="col-sm-10">
+                                        <input required="required" type="number" id="adults" name="adults"
+                                               placeholder="adults"
+                                               class="form-control" value="{{ adults }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="children" class="col-sm-2 col-form-label">Children</label>
+                                    <div class="col-sm-10">
+
+                                        <input required="required" type="number" id="children" name="children"
+                                               placeholder="children"
+                                               class="form-control loon"
+                                               value="{{ children }}">
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="room_count" class="col-sm-10 col-form-label">Room Count</label>
+                                    <div class="col-sm-10">
+
+                                        <input required="required" type="number" id="room_count" name="room_count"
+                                               placeholder="room_count"
+                                               class="form-control loon"
+                                               value="{{ room_count }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 search-form">
+                        <button type="submit" class="btn btn-primary btn-search">Search</button>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="filter-title">Price per night</div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input price-check" type="radio" value="" id="defaultCheck1"
+                               {% if price_per_night == '' %}checked{% endif %}
+                               name="price_per_night">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck1">
+                            All
+                        </label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input price-check" type="radio" value="0-70" id="defaultCheck1"
+                               {% if price_per_night == '0-70' %}checked{% endif %}
+                               name="price_per_night">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck1">
+                            < NZD 71
+                        </label>
+                    </div>
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input price-check" type="radio" value="71-140" id="defaultCheck2"
+                               {% if price_per_night == '71-140' %}checked{% endif %}
+                               name="price_per_night">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            NZD 71 - 140
+                        </label>
+                    </div>
+
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input price-check" type="radio" value="141-210" id="defaultCheck2"
+                               {% if price_per_night == '141-210' %}checked{% endif %}
+                               name="price_per_night">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            NZD 141 - 210
+                        </label>
+                    </div>
+
+
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input price-check" type="radio" value="210-" id="defaultCheck2"
+                               {% if price_per_night == '210-' %}checked{% endif %}
+                               name="price_per_night">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            >NZD 210
+                        </label>
+                    </div>
+
+                    <div class="filter-title" style="margin-top: 20px">Property rating</div>
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input star-check" type="radio" value="" id="defaultCheck2"
+                               {% if filter_star == '' %}checked{% endif %}
+                               name="filter_star">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            All
+                        </label>
+                    </div>
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input star-check" type="radio" value="1" id="defaultCheck2"
+                               {% if filter_star == '1' %}checked{% endif %}
+                               name="filter_star">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            1 star
+                        </label>
+                    </div>
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input star-check" type="radio" value="2" id="defaultCheck2"
+                               {% if filter_star == '2' %}checked{% endif %}
+                               name="filter_star">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            2 star
+                        </label>
+                    </div>
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input star-check" type="radio" value="3" id="defaultCheck2"
+                               {% if filter_star == '3' %}checked{% endif %}
+                               name="filter_star">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            3 star
+                        </label>
+                    </div>
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input star-check" type="radio" value="4" id="defaultCheck2"
+                               {% if filter_star == '4' %}checked{% endif %}
+                               name="filter_star">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            4 star
+                        </label>
+                    </div>
+                    <div class="form-check  filter-check">
+                        <input class="form-check-input star-check" type="radio" value="5" id="defaultCheck2"
+                               {% if filter_star == '5' %}checked{% endif %}
+                               name="filter_star">
+                        <label class="form-check-label filter-checkbox" for="defaultCheck2">
+                            5 star
+                        </label>
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-9 hotel-list">
+                    {% if hotels %}
+                        {% for hotel in hotels %}
+
+                            <div class="card hotel-card">
+                                <div class="row no-gutters" style="height: 180px">
+                                    <div class="col-md-4" style="overflow: hidden;">
+                                        <img class="hotel-img"
+                                             src="{{ hotel.hotel_images.first.url }}"
+                                             alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <div class="hotel-title">{{ hotel.name }}</div>
+                                            <div>
+                                                {% for _ in ''|ljust:hotel.star %}
+                                                    ⭐️
+                                                {% endfor %}
+
+                                            </div>
+                                            <div class="hotel-content">
+                                                {{ hotel.address }}
+                                            </div>
+
+                                            <div class="hotel-action">
+                                                <div style="position: absolute;bottom: 40px;right: 5px;">
+                                                    <span class="currency">NZD</span>
+                                                    <span class="hotel-price"> {{ hotel.min_price_room.base_price }}</span>
+                                                </div>
+                                                <a class="btn btn-primary btn-hotel-detail"
+                                                   href="{% url 'hotel_search_detail' %}?hotel_id={{ hotel.id }}&daterange={{ checkin }} - {{ checkout }}&room_count={{ room_count }}&adults={{ adults }}&children={{ children }}"
+                                                >Select Room </a>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-price-text text-center">
+                            <h1 style=" margin-top: 100px;margin-bottom: 30px"><i class="bi bi-search"></i></h1>
+                            <h2 style="margin-bottom: 50px;">No properties found</h2>
+
+                            <span>There are no matching properties for your search criteria. Try updating your search.</span>
+                        </div>
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (e) {
+                var ref = $(this).find("[required=required]");
+                $(ref).each(function () {
+                    if ($(this).val() == '') {
+                        alert("Required field should not be blank.");
+                        $(this).focus();
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                return true;
+            });
+        });
+        $(function () {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'center',
+                autoUpdateInput: false,
+                locale: {
+                    format: 'YYYY-MM-DD',
+                    cancelLabel: 'Clear'
+                },
+
+            });
+            $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+            });
+            $('input[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+        });
+
+
+        $('#adults').on('change', function () {
+            var val = $(this).val()
+            $('#adults_display').text(val)
+        })
+        $('#children').on('change', function () {
+            var val = $(this).val()
+            $('#child_display').text(val)
+        })
+        $('#room_count').on('change', function () {
+            var val = $(this).val()
+            $('#room_count_display').text(val)
+        })
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] === variable) {
+                    return pair[1];
+                }
+            }
+
+            return false;
+        }
+
+        // 添加 或者 修改 url中参数的值
+        function UpdateUrlParam(name, val) {
+            var thisURL = document.location.href;
+
+            // 如果 url中包含这个参数 则修改
+            if (thisURL.indexOf(name + '=') > 0) {
+                var v = getQueryVariable(name);
+                if (v != null) {
+                    // 是否包含参数
+                    thisURL = thisURL.replace(name + '=' + v, name + '=' + val);
+
+                } else {
+                    thisURL = thisURL.replace(name + '=', name + '=' + val);
+                }
+
+            } // 不包含这个参数 则添加
+            else {
+                if (thisURL.indexOf("?") > 0) {
+                    thisURL = thisURL + "&" + name + "=" + val;
+                } else {
+                    thisURL = thisURL + "?" + name + "=" + val;
+                }
+            }
+            location.href = thisURL;
+            {#history.pushState({url: thisURL, title: document.title}, document.title, thisURL)#}
+
+        }
+
+        $('.price-check').on('change', function () {
+            var val = $(this).val()
+            UpdateUrlParam('price_per_night', val)
+
+
+        });
+
+        $('.star-check').on('change', function () {
+            var val = $(this).val()
+            UpdateUrlParam('filter_star', val)
+        })
+
+
+    </script>
+{% endblock script %}
+
+{% block style %}
+    <style>
+        .filter-checkbox {
+            color: #606266;
+            line-height: 19px;
+            font-size: 14px;
+            padding-left: 5px;
+        }
+
+        .filter-check {
+            padding-bottom: 10px;
+        }
+
+        .filter-title {
+            line-height: 23px;
+            font-size: 18px;
+            padding-bottom: 18px;
+        }
+
+        .search {
+            margin-top: 25px;
+            margin-bottom: 20px;
+        }
+
+        .hotel-card {
+            margin-bottom: 25px;
+            border-radius: 6px;
+        }
+
+        .hotel-title {
+            line-height: 23px;
+            font-size: 17px;
+        }
+
+        .hotel-img {
+            height: 100%;
+            width: 100%;
+            max-height: 180px;
+            border-radius: 6px 0 0 6px;
+        }
+
+        .hotel-content {
+            line-height: 19px;
+            font-size: 14px;
+            color: #686874;
+        }
+
+        .hotel-action {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .hotel-price {
+            color: #e12d2d;
+            font-weight: 550;
+            font-size: 21px;
+
+        }
+
+        .currency {
+            color: #e12d2d;
+            font-weight: 400;
+            font-size: 12px;
+        }
+
+        .search-form {
+            padding-right: 6px;
+            padding-left: 6px;
+        }
+
+        .btn-search {
+            width: 100%;
+        }
+
+        .hotel-list {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    </style>
+{% endblock %}
+
