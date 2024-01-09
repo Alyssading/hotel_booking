@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    hotel_manage
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: white">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Booking Manage list</li>
+        </ol>
+    </nav>
+    <div class="container">
+        <h4>Image List: {{ hotel.name }}{{ room.name }}</h4>
+        <div style="margin-bottom: 15px" class="text-right">
+            {% if hotel %}
+                <a href="{% url "hotel_manage_list" %}" class="btn btn-success">Back
+                </a>
+            {% elif room %}
+                <a href="{% url "room_manage_list" hotel_id=room.hotel_id %}" class="btn btn-success">Back
+                </a>
+            {% endif %}
+
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Add Image
+            </button>
+        </div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">image</th>
+                <th scope="col">description</th>
+                <th scope="col">option</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for img in image_list %}
+                <tr>
+                    <td>
+                        <div class="hotel-img">
+                            <img src="{{ img.url }}" alt=""
+                                 class="hotel-img2"
+                            >
+                        </div>
+                    </td>
+                    <td>{{ img.desc }}</td>
+
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                data-target="#exampleModal"
+                                data-id="{{ img.id }}"
+                                data-desc="{{ img.desc }}"
+                                data-url="{{ img.url }}"
+                        >modify
+                        </button>
+                    </td>
+
+                    <td>
+                        <a class="btn btn-sm btn-danger"
+                           href="{% url 'hotel_image_delete' id=img.id %}"
+                        >delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="image_id" name="image_id" style="display: none">
+                        <div class="form-group">
+                            <label for="desc" class="col-form-label">Desc:</label>
+                            <input type="text" class="form-control" id="desc" name="desc">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-form-label">Image:</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="image_file" name="image_file">
+                                <label class="custom-file-label" for="image_file">Choose image</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary submit-image">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        })
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var imgId = button.data('id')
+            var imgDesc = button.data('desc')
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            if (imgId) {
+                modal.find('.modal-title').text('Edit Image')
+                modal.find('.modal-body #desc').val(imgDesc)
+                modal.find('.modal-body #image_id').val(imgId)
+            } else {
+                modal.find('.modal-body #desc').val('')
+                modal.find('.modal-body #image_id').val('')
+            }
+
+        })
+        $('submit-image').on('click', function () {
+            console.log(imgId)
+        })
+    </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .hotel-img {
+            width: 350px;
+        }
+
+        .hotel-img2 {
+            width: 100%
+        }
+    </style>
+{% endblock %}

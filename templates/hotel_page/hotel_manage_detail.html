@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    hotel detail
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: white">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="{% url 'hotel_manage_list' %}">Hotel Manage</a></li>
+            {% if hotel %}
+                <li class="breadcrumb-item active" aria-current="page">{{ hotel.name }}</li>
+            {% else %}
+                <li class="breadcrumb-item active" aria-current="page">Add Hotel</li>
+
+            {% endif %}
+
+        </ol>
+    </nav>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ hotel.name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">address</label>
+                <input type="text" class="form-control" id="address" name="address" value="{{ hotel.address }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="email">email</label>
+                <input type="text" class="form-control" id="email" name="email" value="{{ hotel.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="website">website</label>
+                <input type="text" class="form-control" id="website" name="website" value="{{ hotel.website }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="tel">tel</label>
+                <input type="text" class="form-control" id="tel" name="tel" value="{{ hotel.tel }}" required>
+            </div>
+            <div class="form-group">
+                <label for="postcode">postcode</label>
+                <input type="text" class="form-control" id="postcode" name="postcode" value="{{ hotel.postcode }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="latitude">latitude</label>
+                <input type="text" class="form-control" id="latitude" name="latitude" value="{{ hotel.latitude }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="longitude">longitude</label>
+                <input type="text" class="form-control" id="longitude" name="longitude" value="{{ hotel.longitude }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="star">Star</label>
+                <select class="form-control form-select" id="star" name="star" data-live-search="True" required>
+                    <option value="1" {% if hotel.star == 1 %} selected {% endif %}>1</option>
+                    <option value="2" {% if hotel.star == 2 %} selected {% endif %}>2</option>
+                    <option value="3" {% if hotel.star == 3 %} selected {% endif %}>3</option>
+                    <option value="4" {% if hotel.star == 4 %} selected {% endif %}>4</option>
+                    <option value="5" {% if hotel.star == 5 %} selected {% endif %}>5</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="city_id">City</label>
+                <select class="form-control form-select" id="city_id" name="city_id" data-live-search="True" required>
+                    {% for country in countries %}
+                        <optgroup label="{{ country.name }}">
+                            {% for city in country.city_set.all %}
+                                <option value="{{ city.id }}"
+                                        {% if hotel.city_id == city.id %}selected{% endif %}
+                                >{{ city.name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="brand">Brand</label>
+                <select class="form-control form-select" id="brand_id" name="brand_id" data-live-search="True">
+                    <option value=""></option>
+                    {% for brand in brands %}
+                        <option value="{{ brand.id }}"
+                                {% if brand.id == hotel.brand_id %}
+                                selected
+                                {% endif %}
+                        >{{ brand.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="chain">Chain</label>
+                <select class="form-control form-select" id="chain_id" name="chain_id" data-live-search="True">
+                    <option value=""></option>
+                    {% for chain in chains %}
+                        <option value="{{ chain.id }}"
+                                {% if chain.id == hotel.chain_id %}
+                                selected
+                                {% endif %}
+                        >{{ chain.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('select').selectpicker();
+    </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+    </style>
+{% endblock %}

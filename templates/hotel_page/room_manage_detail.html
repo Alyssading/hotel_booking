@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    hotel detail
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: white">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="{% url 'hotel_manage_list' %}">Hotel Manage</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="{% url 'room_manage_list' hotel_id=hotel.id %}">{{ hotel.name }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Room Info</li>
+
+        </ol>
+    </nav>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group" style="display: none">
+                <label for="hotel_id">Hotel ID</label>
+                <input type="number" class="form-control" id="hotel_id" name="hotel_id" value="{{ hotel.id }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ room.name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="area">Area(m²)</label>
+                <input type="text" class="form-control" id="area" name="area" value="{{ room.area }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="base_price">Base Price</label>
+                <input type="number" class="form-control" id="base_price" name="base_price"
+                       value="{{ room.base_price }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="max_adults">Max Adults</label>
+                <input type="number" class="form-control" id="max_adults" name="max_adults"
+                       value="{{ room.max_adults }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="max_children">Max Children</label>
+                <input type="number" class="form-control" id="max_children" name="max_children"
+                       value="{{ room.max_children }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="breakfast">Breakfast</label>
+                <select class="form-control form-select" id="breakfast" name="breakfast" required>
+                    <option value=1 {% if room.breakfast %} selected {% endif %}>Free Breakfast</option>
+                    <option value=0 {% if not room.breakfast %} selected {% endif %}>No Breakfast</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cancellation_days">Free Cancellation Days</label>
+                <input type="number" class="form-control" id="cancellation_days" name="cancellation_days"
+                       value="{{ room.cancellation_days }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="can_smoke">Smoke</label>
+                <select class="form-control form-select" id="can_smoke" name="can_smoke" required>
+                    <option value=0 {% if room.can_smoke %} selected {% endif %}>No Smoking</option>
+                    <option value=1 {% if not room.can_smoke %} selected {% endif %}>Allow smoking</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="bed_type">Bed Type</label>
+                <input type="text" class="form-control" id="bed_type" name="bed_type"
+                       value="{{ room.bed_type }}"
+                       required>
+            </div>
+            <div class="form-group">
+                <label for="bed_count">Bed Count</label>
+                <input type="number" class="form-control" id="bed_count" name="bed_count"
+                       value="{{ room.bed_count }}"
+                       required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a type="submit" class="btn btn-primary" href="{% url 'room_manage_list' hotel_id=hotel.id %}">Back</a>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+{% block style %}
+    <style>
+    </style>
+{% endblock %}

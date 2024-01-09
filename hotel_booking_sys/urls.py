@@ -27,6 +27,17 @@ urlpatterns = [path('login/', views.user_login, name='login'),  # login
 
                path('', views.index, name='index'),  # search page
                path('hotel_list/', views.hotel_list, name='hotel_list'),  # Search hotel list page
-               path('hotel_search_detail/', views.hotel_search_detail, name='hotel_search_detail'),  # Search hotel details page
+               path('hotel_search_detail/', views.hotel_search_detail, name='hotel_search_detail'),
+               # Search hotel details page
 
+               # Hotel Management
+               path('hotel_manage_list/', views.hotel_manage_list, name='hotel_manage_list'),  # Hotel Management List
+               path('hotel_manage_detail/', views.hotel_manage_detail, name='hotel_manage_add'),  # Hotel Management View: Add
+               path('hotel_manage_detail/<int:id>', views.hotel_manage_detail, name='hotel_manage_detail'),  # Hotel Management View: Modifying
+               # Hotel room type management
+               path('room_manage_list/<int:hotel_id>', views.room_manage_list, name='room_manage_list'),  # Hotel Management List
+               path('room_manage_detail/', views.room_manage_detail, name='room_manage_detail'),  # Hotel Management Details Page: Add
+               path('room_manage_detail/<int:id>', views.room_manage_detail, name='room_manage_detail'),  # Hotel management details page: modification
+               path('hotel_image/', views.hotel_image_view, name='hotel_image'),  # Hotel image main view: view, modify, add
+               path('hotel_image_delete/<int:id>', views.hotel_image_delete, name='hotel_image_delete'),  # Delete image
                ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
