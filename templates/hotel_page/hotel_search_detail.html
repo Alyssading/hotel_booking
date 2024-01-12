@@ -1,0 +1,543 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    index
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="search">
+            <form method="get" action="{% url 'hotel_list' %}">
+
+                <div class="row">
+                    <div class="col-lg-4 search-form">
+                        <input type="text" id="hotel_name" name="hotel_name" class="form-control"
+                               value="{{ hotel_name }}"
+                               placeholder="Destination or Hotel Name">
+                    </div>
+                    <div class="col-lg-3 search-form">
+                        <div class="form-group">
+                            <input required="required" type="text" id="daterange" name="daterange"
+                                   placeholder="Select Checkin Checkout"
+                                   class="form-control loon"
+                                   value="{{ checkin }} - {{ checkout }}"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 search-form dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                                aria-expanded="false"
+                                style="color: #495057; width: 100%;background: white;border: 1px solid #ced4da;">
+                            <strong id="adults_display">{{ adults }}</strong>&nbsp;Adults,&nbsp;<strong
+                                id="child_display">{{ children }}</strong>&nbsp;Child,&nbsp;<strong
+                                id="room_count_display">{{ room_count }}</strong>&nbsp;Rooms&nbsp;
+                        </button>
+                        <div class="dropdown-menu">
+                            <div class="">
+                                <div class="form-group">
+                                    <label for="adults" class="col-sm-2 col-form-label">Adults</label>
+                                    <div class="col-sm-10">
+                                        <input required="required" type="number" id="adults" name="adults"
+                                               placeholder="adults"
+                                               class="form-control" value="{{ adults }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="children" class="col-sm-2 col-form-label">Children</label>
+                                    <div class="col-sm-10">
+
+                                        <input required="required" type="number" id="children" name="children"
+                                               placeholder="children"
+                                               class="form-control loon"
+                                               value="{{ children }}">
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="room_count" class="col-sm-10 col-form-label">Room Count</label>
+                                    <div class="col-sm-10">
+
+                                        <input required="required" type="number" id="room_count" name="room_count"
+                                               placeholder="room_count"
+                                               class="form-control loon"
+                                               value="{{ room_count }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 search-form">
+                        <button type="submit" class="btn btn-primary btn-search">Search</button>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div>
+            <div class="">
+
+                <span class="hotel-title">{{ hotel.name }}</span>
+                {% for _ in ''|ljust:hotel.star %}<span class="title-star">⭐️</span>{% endfor %}
+
+                <p class="title-address">
+                    {{ hotel.address }}
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            {% for hotel_image in hotel.hotel_images.all %}
+                                {% if forloop.counter0 == 0 %}
+
+                                    <li data-target="#carouselExampleCaptions" data-slide-to="{{ forloop.counter0 }}"
+                                        class="active"></li>
+                                {% else %}
+
+                                    <li data-target="#carouselExampleCaptions"
+                                        data-slide-to="{{ forloop.counter0 }}"></li>
+                                {% endif %}
+                            {% endfor %}
+
+                        </ol>
+                        <div class="carousel-inner img-card">
+                            {% for hotel_image in hotel.hotel_images.all %}
+
+                                <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                    <img src="{{ hotel_image.url }}" class="d-block w-100 img-card"
+                                         onerror="this.src='/static/img/hotel.jpg';this.οnerrοr=null"
+                                    >
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>{{ hotel_image.desc }}</h5>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions"
+                                data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-target="#carouselExampleCaptions"
+                                data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div id='map' style='width: 340px; height: 350px; background-color: #3c3c3c'></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="room-list ">
+            <div class="">
+                <div class="sub-title room-list-title">Room List</div>
+
+                {% for hotel_room in hotel.hotel_rooms.all %}
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <img src="..." alt="..." class="room_img"
+                                     onerror="this.src='/static/hotel_image/roomImg.jpg';this.οnerrοr=null"
+                                >
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ hotel_room.name }}</h5>
+                                    <div class="room-content row">
+                                        <div class="col-lg-5">
+
+                                            <p>
+                                                <li>Free cancellation before Mar 02, 2024</li>
+                                            </p>
+                                            {% if hotel_room.breakfast %}
+                                                <p>
+                                                    <li>Free breakfast</li>
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <p>
+                                                <img class="hotel-icon" src="/static/img/hotel_icon/roomarea.png"
+                                                     alt="">
+                                                Room area: {{ hotel_room.area }}m²
+                                            </p>
+                                            <p>
+                                                <img class="hotel-icon" src="/static/img/hotel_icon/beds.png" alt="">
+                                                Bed type: {{ hotel_room.bed_count }} {{ hotel_room.bed_type }}
+                                            </p>
+                                            <p>
+                                                <img class="hotel-icon" src="/static/img/hotel_icon/maxCheck.png"
+                                                     alt="">
+                                                Max num: {{ hotel_room.max_adults }}
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="room-action">
+                                        <div style="position: absolute;bottom: 40px;right: 5px;">
+                                            <span class="currency">NZD</span>
+                                            <span class="hotel-price"> {{ hotel_room.base_price }}</span>
+                                        </div>
+                                        <a class="btn btn-primary btn-hotel-detail"
+                                           href="{% url 'booking_order' %}?room_id={{ hotel_room.id }}&daterange={{ checkin }} - {{ checkout }}&room_count={{ room_count }}&adults={{ adults }}&children={{ children }}"
+                                        >Booking Now</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+        <div class="overview">
+            <div class="card">
+                <div class="card-header sub-title">Overview</div>
+                <div class="card-body row hotel-overview">
+                    <div class="col-md-4">
+                        <span class="subtitle-overview">Email: </span>{{ hotel.email }}
+                    </div>
+                    <div class="col-md-3">
+                        <span class="subtitle-overview">Tel: </span> {{ hotel.tel }}
+                    </div>
+                    <div class="col-md-5">
+                        <span class="subtitle-overview">Website: </span> {{ hotel.website }}
+                    </div>
+                    <br><br>
+                    {% if hotel.chain %}
+                        <div class="col-md-4">
+                            <span class="subtitle-overview">Chain: </span> {{ hotel.chain.name }}
+                        </div>
+                    {% endif %}
+                    {% if hotel.brand %}
+                        <div class="col-md-3">
+                            <span class="subtitle-overview">Brand: </span> {{ hotel.brand.name }}
+                        </div>
+                    {% endif %}
+
+                    <br><br>
+                    <div class="col-md-12">
+                        <div class="subtitle-overview" style="margin-bottom: 8px">Hotel position</div>
+                        {{ hotel.address }} -- {{ hotel.city.country.name }} {{ hotel.city.name }}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="overview">
+            <div class="card">
+                <div class="card-header sub-title">Policies</div>
+                <div class="card-body row hotel-overview">
+                    <div class="col-md-2">
+                        <span class="subtitle-overview">Booking notice</span>
+                    </div>
+                    <div class="col-md-5">
+                        <li class="subtitle-overview">Important information</li>
+                        <ul class="card-ul">
+                            <li>Some facilities may have restricted access. Guests can contact the property for details
+                                using the contact information on the booking confirmation.
+                            </li>
+                            <li>This property advises that enhanced cleaning and guest safety measures are currently in
+                                place.
+                            </li>
+                            <li>Disinfectant is used to clean the property; commonly-touched surfaces are cleaned with
+                                disinfectant between stays; bed sheets and towels are laundered at a temperature of at
+                                least 60°C/140°F.
+                            </li>
+                            <li>Personal protective equipment, including masks, will be available to guests.</li>
+                            <li>Social distancing measures are in place; staff at the property wear personal protective
+                                equipment; a shield is in place between staff and guests in main contact areas; periodic
+                                temperature checks are conducted on staff; temperature checks are available to guests;
+                                guests are provided with hand sanitizer; masks are required in public areas.
+                            </li>
+                            <li>Contactless check-out is available.</li>
+                            <li>Individually-wrapped food options are available for breakfast, lunch, and dinner.</li>
+                            <li>This property affirms that it adheres to the cleaning and disinfection practices of
+                                SafeStay (AHLA - USA).
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-5">
+                        <li class="subtitle-overview">Children</li>
+                        Extra_bed_policy:children age from 2 to 11 is free
+                        <br><br><br><br><br><br><br>
+                        <li class="subtitle-overview">Pets</li>
+                        Pets are not allowed.
+                        <br><br><br><br><br><br><br>
+                        <li class="subtitle-overview">Special check-in instructions</li>
+                        Front desk staff will greet guests on arrival.
+                        <br><br><br><br><br><br><br>
+                    </div>
+
+                </div>
+
+                <div class="card-body row hotel-overview">
+                    <div class="col-md-2">
+                        <span class="subtitle-overview">Practical info</span>
+                    </div>
+                    <div class="col-md-5">
+                        <li class="subtitle-overview">Check in / check out</li>
+                        <ul class="card-ul">
+                            <li>Check-in from: 15:00
+                            </li>
+                            <li>Check-out until: 11:00
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="col-md-5">
+                        <li class="subtitle-overview">Breakfast</li>
+                        Breakfast charge (unless included in room price), 13 NZD
+                        <br><br><br>
+                        <span class="charge-tips">
+                            The charge or deposit above will be paid at hotel.
+                            <br>
+                            <br>
+                            The amount above is only for your reference. The final charge will depend on the actual amount
+                            chaged by hotel.
+                        </span>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block script %}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWRtaW4tbHVjYXMiLCJhIjoiY2xrcm5jcDFnMGJvMjNmbjNrdWh1dDQ3biJ9.gW0WN4QSSl1EZPmgrhUc0Q';
+
+        const map = new mapboxgl.Map({
+            container: 'map', // 地图容器标签 ID
+            style: 'mapbox://styles/mapbox/streets-v12', // 样式url
+            center: [{{ hotel.longitude }}, {{ hotel.latitude }}], // 设置酒店为中心位置[lng, lat]
+            zoom: 16, // 缩放
+            pitch: 0, // 倾斜角度
+        });
+        // 给酒店的位置加上标记
+        const marker1 = new mapboxgl.Marker().setLngLat([{{ hotel.longitude }}, {{ hotel.latitude }}]).addTo(map);
+        $(document).ready(function () {
+            $("form").submit(function (e) {
+                var ref = $(this).find("[required=required]");
+                $(ref).each(function () {
+                    if ($(this).val() == '') {
+                        alert("Required field should not be blank.");
+                        $(this).focus();
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                return true;
+            });
+        });
+        $(function () {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'center',
+                autoUpdateInput: false,
+                locale: {
+                    format: 'YYYY-MM-DD',
+                    cancelLabel: 'Clear'
+                },
+
+            });
+            $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+            });
+            $('input[name="daterange"]').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+        });
+
+
+        $('#adults').on('change', function () {
+            var val = $(this).val()
+            $('#adults_display').text(val)
+        })
+        $('#children').on('change', function () {
+            var val = $(this).val()
+            $('#child_display').text(val)
+        })
+        $('#room_count').on('change', function () {
+            var val = $(this).val()
+            $('#room_count_display').text(val)
+        })
+    </script>
+{% endblock script %}
+
+{% block style %}
+    <style>
+        .filter-checkbox {
+            color: #606266;
+            line-height: 19px;
+            font-size: 14px;
+            padding-left: 5px;
+        }
+
+        #map {
+            border-style: solid;
+            border-color: #9d9d9d;
+            border-radius: 5px;
+        }
+
+
+        .room-list {
+            margin-top: 25px;
+        }
+
+
+        .search {
+            margin-top: 25px;
+            margin-bottom: 20px;
+        }
+
+
+        .hotel-title {
+            line-height: 23px;
+            font-size: 29px;
+            padding-right: 10px;
+        }
+
+        .sub-title {
+            line-height: 23px;
+            font-size: 21px;
+            padding-right: 10px;
+            margin-bottom: 15px;
+        }
+
+        .title-address {
+            font-size: 16px;
+            line-height: 18px;
+            margin-bottom: 20px;
+            margin-top: 8px;
+            color: #5e5e5e;
+        }
+
+        .title-star {
+            padding-left: 4px;
+        }
+
+        .room_img {
+            height: 100%;
+            width: 100%;
+            max-height: 180px;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .room-content {
+            line-height: 19px;
+            font-size: 14px;
+            color: #686874;
+        }
+
+        .room-action {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .hotel-price {
+            color: #e12d2d;
+            font-weight: 650;
+            font-size: 20px;
+
+        }
+
+        .currency {
+            color: #e12d2d;
+            font-weight: 400;
+            font-size: 12px;
+        }
+
+        .search-form {
+            padding-right: 6px;
+            padding-left: 6px;
+        }
+
+        .btn-search {
+            width: 100%;
+        }
+
+
+        .carousel-item {
+            height: 350px;
+            border-radius: 5px;
+
+        }
+
+        .img-card {
+            border-radius: 5px;
+            max-height: 350px;
+        }
+
+        .hotel-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .room-list-title {
+            border: 1px solid rgba(0, 0, 0, .125);
+            border-radius: 0.25rem;
+            padding: 12px 20px;
+            background-color: rgba(0, 0, 0, .03);
+        }
+
+        .hotel-overview {
+            line-height: 19px;
+            font-size: 14px;
+            color: #686874;
+        }
+
+        .subtitle-overview {
+            font-size: 15px;
+            color: #0f0f0f;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .overview {
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+
+        .card-ul {
+            list-style-type: decimal
+        }
+
+        .card-ul li {
+            margin-top: 6px;
+        }
+
+        .charge-tips {
+            font-size: 12px;
+            color: #F46109;
+        }
+    </style>
+{% endblock %}
+

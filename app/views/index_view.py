@@ -79,5 +79,22 @@ def hotel_list(request):
                                                                      'filter_star': filter_star,
                                                                      })
 
+
 def hotel_search_detail(request):
-    pass
+    params = request.GET
+    hotel_id = params.get('hotel_id')
+    checkin, checkout = params.get('daterange').split(' - ')
+    adults = int(params.get('adults'))
+    children = int(params.get('children'))
+    room_count = int(params.get('room_count'))
+    hotel = Hotel.objects.get(id=hotel_id)
+
+    return render(request, 'hotel_page/hotel_search_detail.html', {
+        'hotel_name': hotel.name,
+        'hotel': hotel,
+        'adults': adults,
+        'children': children,
+        'checkin': checkin,
+        'checkout': checkout,
+        'room_count': room_count,
+    })
