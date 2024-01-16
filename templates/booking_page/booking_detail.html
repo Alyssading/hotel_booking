@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    index
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: white">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'booking_list' %}">Booking list</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Booking</li>
+        </ol>
+    </nav>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+
+            <div class="col-lg-8">
+
+                <div class="customer-info">
+
+                    <div class="l-title">Customer information</div>
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="text" name="first_name" class="form-control"
+                                       value="{{ order.customer_name }}" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" aria-describedby="emailHelp"
+                               value="{{ order.customer_email }}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="text" class="form-control" id="phone" name="phone"
+                               value="{{ order.customer_phone }}" disabled>
+                    </div>
+                </div>
+
+                <div class="customer-info">
+
+                    <div class="l-title">Payment information</div>
+
+                    <div class="form-group">
+                        <label for="payment_type">Payment type</label>
+                        <input type="text" class="form-control" id="payment_type" name="payment_type"
+                               value="{{ order.payment.payment_type }}" disabled>
+
+                        <div class="form-group">
+                            <label for="payment_no">Payment number</label>
+                            <input type="text" class="form-control" id="payment_type" name="payment_type"
+                                   value="{{ order.payment.payment_no }}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="customer-info">
+                        <strong>Do you have any special requests?</strong>
+                        <br>
+                        <p> Special requests are not guaranteed. But we will try our best to make yourselves satisfied.
+                            You
+                            can always send us special reqeusts by email or by phone after order.</p>
+                        <div class="form-group">
+                        <textarea class="form-control" id="special_requests" name="special_requests"
+                                  placeholder="{{ order.special_requests }}"
+                                  rows="3" disabled></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4 l-content">
+                <div class="card card-hotel">
+                    <div class="card-body">
+                        <p class="card-title card-hotel-name">{{ order.hotel.name }}
+                            <br>
+                            {% for _ in ''|ljust:order.hotel.star %}
+                                ⭐️
+                            {% endfor %}
+                        </p>
+
+                        <p class="card-text card-hotel-address">{{ order.hotel.address }}</p>
+
+
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header card-hotel-name">
+                        Booking information
+
+                    </div>
+                    <div class="card-body">
+                        <table class="">
+                            <tbody>
+                            <tr>
+                                <td class="td-label">Checkin</td>
+                                <td class="td-text">{{ order.checkin }}</td>
+                            </tr>
+                            <tr>
+                                <td class="td-label">Checkout</td>
+                                <td class="td-text">{{ order.checkout }}</td>
+                            </tr>
+                            <tr>
+                                <td class="td-label">Room</td>
+                                <td class="td-text">{{ order.room_count }}</td>
+                            </tr>
+                            <tr>
+                                <td class="td-label">Guest</td>
+                                <td class="td-text">{{ order.room_count }}</td>
+                            </tr>
+                            <tr>
+                                <td class="td-label">Bed type</td>
+                                <td class="td-text">{{ order.room.bed_type }}</td>
+                            </tr>
+                            <tr>
+                                <td class="td-label">Breakfast</td>
+                                <td class="td-text">
+                                    {% if order.room.breakfast %}
+                                        Free breakfast
+                                    {% else %}
+                                        Only bed
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-label">Cancellation policy</td>
+                                <td class="td-text">{{ order.room.cancellation_days }}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="td-label">Price</td>
+                                <td class="td-text">NZD {{ order.room.base_price }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a class="btn-pay btn btn-lg btn-success" href="{% url 'booking_list' %}">Back</a>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+
+{% endblock %}
+{% block script %}
+{% endblock %}
+{% block style %}
+    <style>
+        .card-hotel {
+            margin-bottom: 20px;
+        }
+
+        .card-hotel-name {
+            line-height: 23px;
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        .card-hotel-address {
+            line-height: 23px;
+            font-size: 13px;
+        }
+
+        .td-label {
+            font-size: 15px;
+            font-weight: 500;
+            padding-right: 40px;
+            padding-bottom: 10px;
+        }
+
+        .td-text {
+            font-size: 15px;
+            padding-bottom: 10px;
+
+        }
+
+        .customer-info {
+            flex: 1 1 auto;
+            min-height: 1px;
+            padding: 1.25rem;
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, .125);
+            border-radius: 0.25rem;
+            margin-bottom: 25px;
+        }
+
+        .l-title {
+            line-height: 23px;
+            font-weight: 500;
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn-pay {
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .l-content {
+        }
+
+        label {
+            font-weight: 450;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    index
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb" style="background-color: white">
+                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Booking list</li>
+            </ol>
+        </nav>
+
+        <div>
+            {% for order in orders %}
+                <div class="order-item">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ order.order_no }}
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    {{ order.get_status_code_display }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">
+                                <div class="row order-title">
+                                    <div class="col-lg-5">
+                                        {{ order.hotel.name }}
+                                    </div>
+                                    <div class="col-lg-4 order-sub-title">
+                                        {{ order.room.name }} &nbsp;
+                                        {{ order.room.bed_type }}
+                                    </div>
+                                    <div class="col-lg-3 text-right">
+                                        NZD {{ order.payment.price }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-text">
+                                <div class="row order-content">
+                                    <div class="col-lg-4">
+                                        {{ order.checkin }} - {{ order.checkout }}
+                                    </div>
+                                    <div class="col-lg-2">
+                                        {{ order.nights }} Nights
+                                    </div>
+                                    <div class="col-lg-2">
+                                        {{ order.room_count }} Rooms
+                                    </div>
+                                    <div class="col-lg-4">
+                                        {{ order.adults }} Adults {{ order.children }} Children
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="text-right">
+                                <a href="{% url 'booking_detail' id=order.id %}" class="btn btn-sm btn-primary">View</a>
+                                <a href="{% url 'booking_cancel' id=order.id %}" class="btn btn-sm btn-danger">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        <nav aria-label="Page navigation">
+            <div class="pagination">
+                <ul class="pagination">
+                    {% if page.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{% url 'booking_list' %}?page = {{ page.previous_page_number }}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span></a></li>
+                    {% endif %}
+
+                    {% for num in page.paginator.page_range %}
+                        <li class=" page-item {% if num == page.number %}active{% endif %} ">
+                            <a class="page-link" href="{% url 'booking_list' %}?page={{ num }}"> {{ num }}</a>
+                        </li>
+
+                    {% endfor %}
+
+                    {% if page.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{% url 'hotel_manage_list' %}?page={{ page.next_page_number }}"
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+        </div>
+    </div>
+
+{% endblock %}
+{% block script %}
+{% endblock %}
+{% block style %}
+    <style>
+        .order-item {
+            margin-bottom: 20px;
+        }
+
+        .order-title {
+            line-height: 20px;
+            font-weight: 500;
+            font-size: 17px;
+            margin-bottom: 30px;
+        }
+
+        .order-content {
+            line-height: 20px;
+            font-weight: 400;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .order-sub-title {
+            font-size: 15px;
+            font-weight: 350;
+
+        }
+
+
+    </style>
+{% endblock %}

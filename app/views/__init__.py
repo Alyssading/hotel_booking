@@ -1,3 +1,12 @@
+from .booking_view import (
+    booking_room,
+    booking_list,
+    booking_detail,
+    booking_manage_list,
+    booking_cancel,
+    booking_status,
+
+)
 from .hotel_manage_view import (
     hotel_manage_detail,
     hotel_manage_list,

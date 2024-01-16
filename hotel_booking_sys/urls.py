@@ -27,8 +27,14 @@ urlpatterns = [path('login/', views.user_login, name='login'),  # login
 
                path('', views.index, name='index'),  # search page
                path('hotel_list/', views.hotel_list, name='hotel_list'),  # Search hotel list page
-               path('hotel_search_detail/', views.hotel_search_detail, name='hotel_search_detail'),
-               # Search hotel details page
+               path('hotel_search_detail/', views.hotel_search_detail, name='hotel_search_detail'),  # Search hotel details page
+
+               path('booking_order/', views.booking_room, name='booking_order'),  # Hotel reservation form page
+               path('booking_list/', views.booking_list, name='booking_list'),  # reservation list for user
+               path('booking_manage_list/', views.booking_manage_list, name='booking_manage_list'),# reservation list for admin
+               path('booking_detail/<int:id>', views.booking_detail, name='booking_detail'),  # reservation detail
+               path('booking_cancel/<int:id>', views.booking_cancel, name='booking_cancel'),
+               path('booking_status/<int:id>', views.booking_status, name='booking_status'),
 
                # Hotel Management
                path('hotel_manage_list/', views.hotel_manage_list, name='hotel_manage_list'),  # Hotel Management List
