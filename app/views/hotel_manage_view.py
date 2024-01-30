@@ -3,13 +3,14 @@ import time
 import urllib
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from app.models import Hotel, Country, HotelBrand, HotelChain, Room, Images
 
-
+@login_required(login_url='/login')
 def hotel_manage_list(request):
     """View hotel list in the background"""
     param = request.GET
@@ -25,7 +26,7 @@ def hotel_manage_list(request):
                       'page': page_obj,
                   })
 
-
+@login_required(login_url='/login')
 def hotel_manage_detail(request, id=None):
     """View or create/modify hotels"""
     print(id)
@@ -59,13 +60,13 @@ def hotel_manage_detail(request, id=None):
         else:
             return redirect(reverse('hotel_manage_list'))
 
-
+@login_required(login_url='/login')
 def hotel_delete(request, id):
     """delete hotel"""
     Hotel.objects.filter(id=id).delete()
     return redirect('hotel_manage_list')
 
-
+@login_required(login_url='/login')
 def hotel_image_view(request):
     param = request.GET
     hotel_id = param.get('hotel_id')
@@ -114,7 +115,7 @@ def hotel_image_view(request):
 
         return redirect(reverse('hotel_image') + '?' + urllib.parse.urlencode(request.GET))
 
-
+@login_required(login_url='/login')
 def hotel_image_delete(request, id):
     img = Images.objects.get(id=id)
     img.delete()
@@ -127,7 +128,7 @@ def hotel_image_delete(request, id):
     else:
         return redirect(reverse('hotel_manage_list'))
 
-
+@login_required(login_url='/login')
 def room_manage_list(request, hotel_id):
     """View hotel room type list in the background"""
     param = request.GET
@@ -144,7 +145,7 @@ def room_manage_list(request, hotel_id):
                       'hotel': hotel,
                   })
 
-
+@login_required(login_url='/login')
 def room_manage_detail(request, id=None):
     """View or create/modify room types"""
     hotel_id = request.GET.get('hotel_id')
@@ -175,7 +176,7 @@ def room_manage_detail(request, id=None):
             messages.success(request, 'Create Success')
             return redirect(reverse('room_manage_list', kwargs=dict(hotel_id=room.hotel_id)))
 
-
+@login_required(login_url='/login')
 def room_delete(request, id):
     """delete room"""
     Hotel.objects.filter(id=id).delete()

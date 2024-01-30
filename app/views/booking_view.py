@@ -2,12 +2,13 @@ import datetime
 import random
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, reverse
 
 from app.models import Room, Order, Payment
 
-
+@login_required(login_url='/login')
 def booking_room(request):
     """Booking Room"""
     params = request.GET
@@ -59,7 +60,7 @@ def booking_room(request):
         )
         return redirect(reverse('booking_list'))
 
-
+@login_required(login_url='/login')
 def booking_list(request):
     """Booking list for user"""
     param = request.GET
@@ -77,13 +78,13 @@ def booking_list(request):
                       'orders': page_obj.object_list
                   })
 
-
+@login_required(login_url='/login')
 def booking_detail(request, id):
     """booking details"""
     order = Order.objects.get(id=id)
     return render(request, 'booking_page/booking_detail.html', {'order': order})
 
-
+@login_required(login_url='/login')
 def booking_cancel(request, id):
     """user cancel bookings"""
     order = Order.objects.get(id=id)
@@ -93,7 +94,7 @@ def booking_cancel(request, id):
                      'The application has been successfully cancelled and is waiting for customer service to process.')
     return redirect(reverse('booking_list'))
 
-
+@login_required(login_url='/login')
 def booking_status(request, id):
     """admin modify booking status"""
     order = Order.objects.get(id=id)
@@ -103,7 +104,7 @@ def booking_status(request, id):
                      'Status modification successful.')
     return redirect(reverse('booking_manage_list'))
 
-
+@login_required(login_url='/login')
 def booking_manage_list(request):
     """admin checking bookings"""
     param = request.GET

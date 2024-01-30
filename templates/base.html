@@ -43,20 +43,20 @@
                             {{ user.username }}
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/">
+                            <a class="dropdown-item" href="{% url "index" %}">
                                 <i class="bi bi-lightning"></i>
                                 Index</a>
                             <div class="dropdown-divider"></div>
 
                             {% if request.user.is_staff %}
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{% url "hotel_manage_list" %}">
                                     <i class="bi bi-house-add"></i>
                                     Hotel manage</a>
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{% url "booking_manage_list" %}">
                                     <i class="bi bi-layout-text-sidebar"></i>
                                     Booking manage</a>
                             {% else %}
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{% url "booking_list" %}">
                                     <i class="bi bi-layout-text-sidebar"></i>
                                     My booking</a>
                             {% endif %}

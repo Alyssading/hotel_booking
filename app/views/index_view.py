@@ -1,6 +1,7 @@
 import datetime
 import urllib
 
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -19,6 +20,7 @@ def index(request):
         # The view function returned a template through the render method:index.html
         return render(request, 'index.html', {'default_date_range': date_range})
 
+@login_required(login_url='/login')
 def hotel_list(request):
     params = request.GET.dict()
     hotel_name = params.get('hotel_name')
@@ -79,7 +81,7 @@ def hotel_list(request):
                                                                      'filter_star': filter_star,
                                                                      })
 
-
+@login_required(login_url='/login')
 def hotel_search_detail(request):
     params = request.GET
     hotel_id = params.get('hotel_id')
