@@ -6,7 +6,7 @@ from django.test import TestCase
 from app.models import Hotel, Country, City, Order, User, Room, Payment
 
 
-class HotelTestCase(TestCase):
+class HotelTestCase(TestCase): # test create hotel
     def setUp(self):
         test_hotel = Hotel.objects.create(
             name='testname',
@@ -31,7 +31,7 @@ class HotelTestCase(TestCase):
         self.assertEqual(hotel.city.country.name, 'test')
 
 
-class RoomTestCase(TestCase):
+class RoomTestCase(TestCase): # test create room
     def setUp(self):
         test_hotel = Hotel.objects.create(
             name='testname',
@@ -70,7 +70,7 @@ class RoomTestCase(TestCase):
         self.assertEqual(room.hotel.name, 'testname')
 
 
-class OrderTestCase(TestCase):
+class OrderTestCase(TestCase): # test create booking
 
     def setUp(self):
         test_hotel = Hotel.objects.create(

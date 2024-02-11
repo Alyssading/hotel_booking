@@ -20,7 +20,7 @@
             <form action="" method="post" novalidate autocomplete="off" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
-                {#form.as_p 自动成成input标签#}
+                {#form.as_p Automatically generate input tags#}
                 <input type="submit" class="btn-login" value="Submit">
             </form>
         </div>

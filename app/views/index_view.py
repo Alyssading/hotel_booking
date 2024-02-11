@@ -31,7 +31,7 @@ def hotel_list(request):
     children = int(params.get('children'))
     room_count = int(params.get('room_count'))
     page = int(params.get('page', 1))
-    hotels = Hotel.objects.select_related("city").prefetch_related('hotel_rooms').filter(
+    hotels = Hotel.objects.select_related("city").filter(
         Q(name__contains=hotel_name) | Q(address__contains=hotel_name) | Q(city__name__contains=hotel_name)
     )
     hotels_res = []
@@ -54,7 +54,7 @@ def hotel_list(request):
                 checkout=checkout,
                 room=room
             )
-            inventory = room.inventory - sum([order.room_count for order in orders])
+            inventory = room.inventory - sum([order.room_count for order in orders]) # 
             if inventory > 0:
                 if not hotel_min_price_room:
                     hotel_min_price_room = room

@@ -13,7 +13,7 @@ def booking_room(request):
     """Booking Room"""
     params = request.GET
     room_id = params.get('room_id')
-    checkin, checkout = params.get('daterange').split(' - ')
+    checkin, checkout = params.get('daterange').split(' - ') # splite checkin and checkout date
     adults = int(params.get('adults'))
     children = int(params.get('children'))
     room_count = int(params.get('room_count'))
@@ -67,9 +67,9 @@ def booking_list(request):
     user = request.user
     page_size = 10
     page = int(param.get('page', '1'))
-    orders = Order.objects.filter(user=user).order_by('-id')
-
-    paginator = Paginator(orders, page_size)
+    orders = Order.objects.filter(user=user).order_by('-id') 
+    # 'select * from order where user_id=1 order by id desc'
+    paginator = Paginator(orders, page_size) # fen ye
     page_obj = paginator.page(page)
     return render(request,
                   'booking_page/booking_list.html',
@@ -87,9 +87,10 @@ def booking_detail(request, id):
 @login_required(login_url='/login')
 def booking_cancel(request, id):
     """user cancel bookings"""
+    # order.object.filter(id=id).update(status_code=3) ba fu he tiao jian de (quan bu) geng xin
     order = Order.objects.get(id=id)
     order.status_code = '3'
-    order.save()
+    order.save() 
     messages.success(request,
                      'The application has been successfully cancelled and is waiting for customer service to process.')
     return redirect(reverse('booking_list'))

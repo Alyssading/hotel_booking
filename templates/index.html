@@ -121,7 +121,7 @@
 
 {% endblock %}
 
-{% block script %}
+{% block script %} 
     <script>
         $(document).ready(function () {
             $("form").submit(function (e) {
@@ -137,7 +137,7 @@
                 return true;
             });
         });
-        // 时间选择器
+        // Time selector
         $(function () {
             $('input[name="daterange"]').daterangepicker({
                 opens: 'center',
@@ -155,10 +155,10 @@
                 $(this).val('');
             });
         });
-        // Jquery标签选择器，#是根据ID选择， .是根据class选择
+        // Jquery tag selector,，#is selected based on ID， .is selected based on class
         $('#adults').on('change', function () {
-            var val = $(this).val() // 获取当前选中标签的value
-            $('#adults_display').text(val) // 把上面获取的值给这个标签
+            var val = $(this).val() // Get the value of the currently selected tag
+            $('#adults_display').text(val) // Give the value obtained above to this label
         })
         $('#children').on('change', function () {
             var val = $(this).val()

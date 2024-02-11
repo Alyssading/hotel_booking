@@ -48,10 +48,11 @@ def hotel_manage_detail(request, id=None):
                       })
     elif request.method == 'POST':
         data = request.POST.dict()
-        data.pop('csrfmiddlewaretoken')
+        data.pop('csrfmiddlewaretoken') # 
         hotel, _ = Hotel.objects.update_or_create(
             id=id,
             defaults=data
+            #{name=data['name'],address=data['address]}
         )
         hotel.city_id = data['city_id']
         hotel.save()
@@ -98,12 +99,12 @@ def hotel_image_view(request):
             )
         )
         if file:
-            img_url = os.path.join(
+            img_url = os.path.join( # pin jie lu jing 
                 'media',
                 'hotel_image',
                 f'{time.time()}{file.name}'
             )
-            with open(img_url, 'wb+') as destination:
+            with open(img_url, 'wb+') as destination: # ba wen jian shang chuan ben di
                 for chunk in file.chunks():
                     destination.write(chunk)
             image.url = os.path.join('/', img_url)
@@ -170,7 +171,7 @@ def room_manage_detail(request, id=None):
         )
         if id:
             messages.success(request, 'Update Success')
-            return redirect(reverse('room_manage_detail', kwargs=dict(id=room.id)))
+            return redirect(reverse('room_manage_detail', kwargs=dict(id=room.id))+f'?hotel_id={hotel_id}')
         else:
             room.hotel_id=hotel_id
             messages.success(request, 'Create Success')

@@ -28,8 +28,8 @@ def register(
         if register_form.is_valid():
             user_obj = register_form.cleaned_data
             if user_obj.get('password') == user_obj.get('re_password'):
-                # 这个create_user就是继承的AbstractUser里的方法
-                new_user = User.objects.create_user(
+                # This create_user is the inherited method from AbstractUser
+                new_user = User.objects.create_user( # Create user and secret password
                     username=user_obj.get('username'),
                     email=user_obj.get('email'),
                     password=user_obj.get('password'),
@@ -100,12 +100,15 @@ def user_login(
         login_form = LoginForm(data)
         if login_form.is_valid():
             login_data = login_form.cleaned_data
-            user = authenticate(
-                **login_data
+            user = authenticate( # use username and password to find data and to verify the password
+                # **login_data
+                username=login_data['username'],
+                password=login_data['password']
+                
             )
             if user is not None:
                 if user.is_active:
-                    login(request, user)
+                    login(request, user) # set cookie and setion keeping login
                     messages.success(request, 'Login Successful')
                     return redirect(request.GET.get('next') or '/')
                 else:
@@ -127,7 +130,7 @@ def user_login(
 
 
 def user_logout(
-        request: WSGIRequest
+        request: WSGIRequest 
 ):
     """logout"""
     logout(request)
@@ -174,7 +177,7 @@ def change_pwd(
             login_data = form.cleaned_data
             if login_data.get('password') == login_data.get('re_password'):
                 user = request.user
-                if user.check_password(login_data.get('password')):
+                if user.check_password(login_data.get('password')): 
                     user.set_password(login_data.get('new_password'))
                     user.save()
                     messages.add_message(request, level=messages.SUCCESS,
